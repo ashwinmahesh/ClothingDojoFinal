@@ -33,7 +33,8 @@ def logout(request):
     request.session['remember']=remember
     request.session['login_email']=log_em
     print('Logging out')
-    return redirect('/login_page/')
+    return redirect("https://learn.codingdojo.com/")
+    # return redirect('/login_page/')
 
 def index(request):
     # ADD to every view
