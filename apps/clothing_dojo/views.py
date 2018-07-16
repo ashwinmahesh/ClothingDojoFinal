@@ -329,8 +329,10 @@ def viewOrders(request):
     if 'userID' not in request.session:
         return redirect('/login_page/')
     print('Viewing orders')
+    u =User.objects.get(id=request.session['userID'])
     context={
-        'user':User.objects.get(id=request.session['userID'])
+        'user':u,
+        'orders':u.orders.all().order_by("-created_at"),
     }
     return render(request, 'clothing_dojo/clothingDojo_viewOrders.html', context)
 
@@ -394,6 +396,9 @@ def processPayment(request):
             description=User.objects.get(id=request.session['userID']).email,
             card=request.POST['stripe_id']
         )
+        u = User.objects.get(id=request.session['userID'])
+        u.stripe_id = request.POST['stripe_id']
+        u.save()
         return redirect('/processCheckout/')
     except stripe.CardError as error:
         e.addMessage('The card has been declined', 'card_fail')

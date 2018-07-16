@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Clothing Dojo - Your Orders</title>
     {% load static %}
     <link rel='stylesheet' type='text/css' href='{% static 'clothing_dojo/css/cdHeaderCSS.css' %}'>
     <link rel='stylesheet' type='text/css' href='{% static 'clothing_dojo/css/cdOrdersCSS.css' %}'>
@@ -30,7 +30,7 @@
             <a class='back' href='/'>BACK</a>
             <p class='page_title'>Your Orders</p>
             <div class='holding_table'>
-                {% for order in user.orders.all %}
+                {% for order in orders.all %}
                     <p class='date_placed'><span class='bold'>Order Placed:</span> {{order.created_at}}</p>
                     <table class='table'>
                         <thead>

@@ -33,6 +33,8 @@ div.holding_table{
     margin:20px 40px;
 }
 p.date_placed{
+    padding-top:15px;
+    border-top:2px solid rgb(0,154,199);
     font-size:17pt;
 }
 span.bold{

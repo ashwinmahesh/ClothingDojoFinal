@@ -53,6 +53,8 @@ class User(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     password=models.CharField(max_length=255, null=True)
     cohort=models.ForeignKey(Cohort, related_name='students', null=True)
+    location = models.ForeignKey(Location, related_name='students', null=True)
+    stripe_id = models.CharField(max_length=255, null=True)
     objects=UserManager()
 
 class Cart(models.Model):
@@ -69,12 +71,7 @@ class CartItem(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
 
 class Order(models.Model):
-    # first_name=models.CharField(max_length=255)
-    # last_name=models.CharField(max_length=255)
-    # email=models.CharField(max_length=255)
     user=models.ForeignKey(User, related_name='orders', null=True)
-    # cohort=models.CharField(max_length=255)
-    # cohort=models.ForeignKey(Cohort, related_name='orders')
     total=models.DecimalField(max_digits=9, decimal_places=2)
     num_items=models.IntegerField(default=0)
     status=models.CharField(max_length=55, default='Unclaimed')
