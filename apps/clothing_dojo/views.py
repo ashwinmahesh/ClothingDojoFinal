@@ -407,3 +407,35 @@ def processPayment(request):
     #FORM IS VALID
     print(request.POST)
     return redirect('/processCheckout/')
+
+def processCancel(request, order_id):
+    #General Validations
+    if 'loggedIn' not in request.session:
+        return redirect('/login_page/')
+    if request.session['loggedIn']==False:
+        return redirect('/login_page/')
+    if 'userID' not in request.session:
+        return redirect('/login_page/')
+    if len(User.objects.filter(id=request.session['userID']))==0:
+        return redirect('/login_page/')
+    #End of General Validations
+
+    #MORE VALIDATIONS SPECIFIC TO THIS CASE
+    if len(Order.objects.filter(id=order_id))==0:
+        print("Attempting to cancel order that doesn't exist")
+        return redirect('/viewOrders/')
+    order = Order.objects.get(id=order_id)
+    if order.user.id != request.session['userID']:
+        print("Attempt to cancel order that isnt yours")
+        return redirect('/viewOrders/')
+    #End of Specific Validations
+
+    print("Cancelling the order: ", order_id)
+    for item in order.items.all():
+        pass
+        # Subtract item from batch count
+        # delete item
+    # Delete order
+    # Refund Card
+    
+    return redirect('/viewOrders/')

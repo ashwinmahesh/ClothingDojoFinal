@@ -16,4 +16,5 @@ urlpatterns=[
     url(r'^viewOrders/$', views.viewOrders),
     url(r'^payment/$', views.paymentInfo),
     url(r'^processPayment/$', views.processPayment),
+    url(r'^processCancel/(?P<order_id>[0-9]\d*)/$', views.processCancel)
 ]

@@ -58,7 +58,7 @@
                         <p class='total'><span class='bold'>Total:</span> ${{order.total}}</p>
                         {% ifequal order.ordered False %}
                             {% ifnotequal order.total 0 %}
-                                <a href='#'>Cancel</a>
+                                <a href='/processCancel/{{order.id}}/'>Cancel</a>
                             {% endifnotequal %}
                         {% endifequal %}
                     </div>
