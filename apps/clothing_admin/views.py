@@ -69,7 +69,7 @@ def logout(request):
 
 def orders(request):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -94,7 +94,7 @@ def orders(request):
 
 def products(request):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -114,7 +114,7 @@ def products(request):
 
 def addProduct(request):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -148,7 +148,7 @@ def addProduct(request):
 
 def processNew(request):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -209,7 +209,7 @@ def processNew(request):
     
 def deleteProduct(request, product_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -232,7 +232,7 @@ def deleteProduct(request, product_id):
 
 def editProduct(request, product_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -262,7 +262,7 @@ def editProduct(request, product_id):
 
 def processEdit(request, product_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -321,7 +321,7 @@ def processEdit(request, product_id):
 
 def orderInfo(request, order_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -342,7 +342,7 @@ def orderInfo(request, order_id):
 
 def changeStatusAPI(request, order_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -364,7 +364,7 @@ def changeStatusAPI(request, order_id):
 
 def batchInfo(request):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -384,7 +384,7 @@ def batchInfo(request):
 
 def viewLocation(request, location_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -407,7 +407,7 @@ def viewLocation(request, location_id):
 
 def viewBatch(request, batch_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -433,7 +433,7 @@ def viewBatch(request, batch_id):
 
 def batchConfirm(request, batch_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -453,7 +453,7 @@ def batchConfirm(request, batch_id):
 
 def finalizeBatch(request, batch_id):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if 'userID' not in request.session:
         return redirect('/admin')
     if len(User.objects.filter(id=request.session['userID']))==0:
@@ -488,7 +488,7 @@ def finalizeBatch(request, batch_id):
 
 def searchAPI(request):
     if 'adminLoggedIn' not in request.session:
-        request.session['adminLoggedIn']=True
+        request.session['adminLoggedIn']=False
     if request.method!='POST':
         return HttpResponse('This is an API')
     print('You are searching')

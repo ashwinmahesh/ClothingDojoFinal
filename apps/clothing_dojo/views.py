@@ -11,13 +11,15 @@ FREE_SHIRT_ID=1
 stripe.api_key=settings.STRIPE_SECRET
 
 def login(request):
+    if request.session['loggedIn']==True:
+        return redirect('/')
     return render(request, 'clothing_dojo/login_page.html')
     # return render(request, 'clothing_dojo/clothingDojo_login.html')
 
 def processLogin(request):
     #Modify with info from codingdojo API
     request.session['loggedIn']=True
-    request.session['userID']=1
+    request.session['userID']=2
     return redirect('/')
 
 def logout(request):
@@ -27,11 +29,11 @@ def logout(request):
         return redirect('/login_page/')
 
     request.session['adminLoggedIn']=False
-    remember=request.session['remember']
-    log_em=request.session['login_email']
+    # remember=request.session['remember']
+    # log_em=request.session['login_email']
     request.session.clear()
-    request.session['remember']=remember
-    request.session['login_email']=log_em
+    # request.session['remember']=remember
+    # request.session['login_email']=log_em
     print('Logging out')
     return redirect("https://learn.codingdojo.com/")
     # return redirect('/login_page/')
@@ -428,14 +430,28 @@ def processCancel(request, order_id):
     if order.user.id != request.session['userID']:
         print("Attempt to cancel order that isnt yours")
         return redirect('/viewOrders/')
+    if order.ordered==True:
+        print("This order has already been ordered. It is too late to cancel")
+        return redirect('/viewOrders/')
+    ### Add another check to see if item has already been ordered ###
     #End of Specific Validations
 
     print("Cancelling the order: ", order_id)
-    for item in order.items.all():
-        pass
-        # Subtract item from batch count
-        # delete item
-    # Delete order
-    # Refund Card
-    
+    location=User.objects.get(id=request.session['userID']).cohort.location
+    batch = location.batches.last()
+    for i in range(len(order.items.all())-1, -1, -1):
+        item=order.items.all()[i]
+        bt = batch.items.get(product=item.product, size=item.size, color=item.color)
+        bt.quantity-=item.quantity
+        bt.total-=item.total
+        bt.save()
+        if bt.quantity==0:
+            bt.delete()
+        p = item.product
+        p.num_sold -= item.quantity
+        p.save()
+        item.delete()
+    #Refund Card
+    order.delete()
+
     return redirect('/viewOrders/')

@@ -37,6 +37,7 @@
                             <th>image</th>
                             <th>Name</th>
                             <th>Size</th>
+                            <th>Color</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Item Total</th>
@@ -47,6 +48,7 @@
                                     <td><img src='{{item.product.image_path}}' alt='Product_image'></td>
                                     <td>{{item.product.name}}</td>
                                     <td>{{item.size}}</td>
+                                    <td>{{item.color.name}}</td>
                                     <td>${{item.product.cost}}</td>
                                     <td>{{item.quantity}}</td>
                                     <td>${{item.total}}</td>
