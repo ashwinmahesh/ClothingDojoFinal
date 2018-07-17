@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href='{% static 'clothing_dojo/css/proxima_nova/fonts/fonts.css' %}'/>
+    <script>
+        $(document).ready(function(){
+            $('a.cancel_button').click(function(){
+                var conf = confirm("Are you sure you wish to cancel this order?")
+                if (conf==false){
+                    return false
+                }
+            })
+        })
+    </script>
 </head>
 <body>
     <div class='wrapper'>
@@ -29,6 +39,9 @@
         <div class='body'>
             <a class='back' href='/'>BACK</a>
             <p class='page_title'>Your Orders</p>
+            {% for message in order_cancel_success %}
+                <p class='green'>{{message}}</p>
+            {% endfor %}
             <div class='holding_table'>
                 {% for order in orders.all %}
                     <p class='date_placed'><span class='bold'>Order Placed:</span> {{order.created_at}}</p>
@@ -60,7 +73,7 @@
                         <p class='total'><span class='bold'>Total:</span> ${{order.total}}</p>
                         {% ifequal order.ordered False %}
                             {% ifnotequal order.total 0 %}
-                                <a href='/processCancel/{{order.id}}/'>Cancel</a>
+                                <a class='cancel_button' href='/processCancel/{{order.id}}/'>Cancel</a>
                             {% endifnotequal %}
                         {% endifequal %}
                     </div>

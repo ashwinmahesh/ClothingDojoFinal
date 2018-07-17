@@ -332,10 +332,13 @@ def viewOrders(request):
         return redirect('/login_page/')
     print('Viewing orders')
     u =User.objects.get(id=request.session['userID'])
+    e=getFromSession(request.session['flash'])
     context={
         'user':u,
         'orders':u.orders.all().order_by("-created_at"),
+        'order_cancel_success':e.getMessages('order_cancel_success')
     }
+    request.session['flash']=e.addToSession()
     return render(request, 'clothing_dojo/clothingDojo_viewOrders.html', context)
 
 def processPayment(request):
@@ -453,5 +456,7 @@ def processCancel(request, order_id):
         item.delete()
     #Refund Card
     order.delete()
-
+    e=getFromSession(request.session['flash'])
+    e.addMessage("Your order has been successfully cancelled.", 'order_cancel_success')
+    request.session['flash']=e.addToSession()
     return redirect('/viewOrders/')
