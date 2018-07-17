@@ -205,6 +205,7 @@ div.q_and_p p{
     p.total{
         border-top:1px solid rgb(241,244,248);
         padding-top:8px;
+        width:562px;
     }
     div.holding_table{
         width:650px;
