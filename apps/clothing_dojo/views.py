@@ -11,7 +11,7 @@ FREE_SHIRT_ID=1
 stripe.api_key=settings.STRIPE_SECRET
 
 def login(request):
-    if request.session['loggedIn']==True:
+    if 'loggedIn' in request.session and request.session['loggedIn']==True:
         return redirect('/')
     return render(request, 'clothing_dojo/login_page.html')
     # return render(request, 'clothing_dojo/clothingDojo_login.html')
