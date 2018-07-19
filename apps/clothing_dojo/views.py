@@ -19,7 +19,7 @@ def login(request):
 def processLogin(request):
     #Modify with info from codingdojo API
     request.session['loggedIn']=True
-    request.session['userID']=2
+    request.session['userID']=1
     return redirect('/')
 
 def logout(request):
@@ -232,8 +232,11 @@ def processCheckout(request):
         return redirect('/cart/')
 
     cart=User.objects.get(id=request.session['userID']).cart
-    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).cohort.location)
+    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).location)
+    location=User.objects.get(id=request.session['userID']).location
+    o.batch=location.batches.last()
     o.save()
+   
     for item in cart.items.all():
         ot=OrderItem.objects.create(product=item.product, order=o, size=item.size, color=item.color, quantity=item.quantity, total=item.total)
         o.total+=ot.total
@@ -242,8 +245,8 @@ def processCheckout(request):
         p.num_sold+=ot.quantity
         p.save()
 
-    location=User.objects.get(id=request.session['userID']).cohort.location
-    o.batch=location.batches.last()
+    # location=User.objects.get(id=request.session['userID']).location
+    # o.batch=location.batches.last()
     o.save()
     
     for item in o.items.all():
@@ -303,7 +306,7 @@ def processClaim(request):
     o.num_items=1
     shirt.num_sold+=1
     shirt.save()
-    location=User.objects.get(id=request.session['userID']).cohort.location
+    location=User.objects.get(id=request.session['userID']).location
     o.batch=location.batches.last()
     o.save()
     user=User.objects.get(id=request.session['userID'])
@@ -440,7 +443,7 @@ def processCancel(request, order_id):
     #End of Specific Validations
 
     print("Cancelling the order: ", order_id)
-    location=User.objects.get(id=request.session['userID']).cohort.location
+    location=User.objects.get(id=request.session['userID']).location
     batch = location.batches.last()
     for i in range(len(order.items.all())-1, -1, -1):
         item=order.items.all()[i]
