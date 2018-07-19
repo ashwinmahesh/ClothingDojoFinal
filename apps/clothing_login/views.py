@@ -95,8 +95,8 @@ def processRegister(request):
         request.session['flash']=e.addToSession()
         return redirect('/login/register/')
     location=Location.objects.get(name=request.POST['location'])
-    cohort_toAdd=Cohort.objects.get(location=location)
-    User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'], password=bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()), cohort=cohort_toAdd)
+    # cohort_toAdd=Cohort.objects.get(location=location)
+    User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'], password=bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()), location=location)
     request.session['first_name']=''
     request.session['last_name']=''
     request.session['email']=''
