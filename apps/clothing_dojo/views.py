@@ -299,15 +299,19 @@ def processClaim(request):
         return redirect('/')
     if request.method!='POST':
         return redirect('/')
-    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).cohort.location)
+    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).location)
+    #
+    location=User.objects.get(id=request.session['userID']).location
+    o.batch=location.batches.last()
+    #
     o.save()
     shirt=Product.objects.get(id=FREE_SHIRT_ID)
     OrderItem.objects.create(product=shirt, order=o, size=request.POST['size'], color=Color.objects.get(id=request.POST['color']), quantity=1, total=0)
     o.num_items=1
     shirt.num_sold+=1
     shirt.save()
-    location=User.objects.get(id=request.session['userID']).location
-    o.batch=location.batches.last()
+    # location=User.objects.get(id=request.session['userID']).location
+    # o.batch=location.batches.last()
     o.save()
     user=User.objects.get(id=request.session['userID'])
     user.claimed_shirt=True
