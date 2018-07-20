@@ -23,10 +23,10 @@ def processLogin(request):
     return redirect('/')
 
 def logout(request):
-    if('loggedIn' in request.session and request.session['loggedIn']==False):
-        return redirect('/login_page/')
-    if ('loggedIn' not in request.session):
-        return redirect('/login_page/')
+    # if('loggedIn' in request.session and request.session['loggedIn']==False):
+    #     return redirect('/login_page/')
+    # if ('loggedIn' not in request.session):
+    #     return redirect('/login_page/')
 
     request.session['adminLoggedIn']=False
     # remember=request.session['remember']
@@ -86,6 +86,9 @@ def addToCart(request, product_id):
         return redirect('/login_page/')
     if 'userID' not in request.session:
         return redirect('/login_page/')
+
+    if request.method!='POST':
+        return redirect('/')
 
     if len(Product.objects.filter(id=product_id))==0:
         print('Attempting to view product that does not exist')
@@ -178,7 +181,6 @@ def checkout(request):
         print('Cannot checkout on an empty cart')
         return redirect('/cart/')
     print('Checking out')
-    # return redirect('/processCheckout/')
     return redirect('/payment/')
 
 def paymentInfo(request):
@@ -443,7 +445,6 @@ def processCancel(request, order_id):
     if order.ordered==True:
         print("This order has already been ordered. It is too late to cancel")
         return redirect('/viewOrders/')
-    ### Add another check to see if item has already been ordered ###
     #End of Specific Validations
 
     print("Cancelling the order: ", order_id)

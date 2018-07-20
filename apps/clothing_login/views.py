@@ -61,8 +61,6 @@ def register(request):
         request.session['email']=''
         request.session['location']=''
     e=getFromSession(request.session['flash'])
-    # msgs=e.getMessages()
-    # print(msgs)
     context={
         'locations':Location.objects.all(),
         'first_name':request.session['first_name'],
