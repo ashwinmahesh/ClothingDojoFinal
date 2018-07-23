@@ -5,7 +5,7 @@ from djangounchained_flash import ErrorManager, getFromSession
 def index(request):
     if 'flash' not in request.session:
         request.session['flash']=ErrorManager().addToSession()
-    if 'userID' in request.session:
+    if 'userID' in request.session and len(User.objects.filter(id=request.session['userID']))>0 and 'loggedIn' in request.session and request.session['loggedIn']==True:
         return redirect('/')
     if 'remember' not in request.session:
         request.session['remember']=''

@@ -65,6 +65,7 @@ def logout(request):
     request.session['userID']=-1
     request.session['adminLoggedIn']=False
     request.session['loggedIn']=False
+    #request.session.clear()
     return redirect('/admin')
 
 def orders(request):
