@@ -41,13 +41,13 @@ def logout(request):
 def index(request):
     # ADD to every view
     if 'loggedIn' not in request.session:
-        return redirect('/login_page/')
+        return redirect('/login/')
     if request.session['loggedIn']==False:
-        return redirect('/login_page/')
+        return redirect('/login/')
     if 'userID' not in request.session:
-        return redirect('/login_page/')
+        return redirect('/login/')
     if len(User.objects.filter(id=request.session['userID']))==0:
-        return redirect('/login_page/')
+        return redirect('/login/')
 
     if 'flash' not in request.session:
         request.session['flash']=ErrorManager().addToSession()

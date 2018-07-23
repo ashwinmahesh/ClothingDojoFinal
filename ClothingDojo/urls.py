@@ -18,4 +18,5 @@ from django.conf.urls import url, include
 urlpatterns = [
     url(r'^', include('apps.clothing_dojo.urls')),
     url(r'^admin/', include('apps.clothing_admin.urls')),
+    url(r'^login/', include('apps.clothing_login.urls'))
 ]

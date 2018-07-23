@@ -5,7 +5,7 @@ from djangounchained_flash import ErrorManager, getFromSession
 def index(request):
     if 'flash' not in request.session:
         request.session['flash']=ErrorManager().addToSession()
-    if 'userID' in request.session:
+    if 'userID' in request.session and len(User.objects.filter(id=request.session['userID']))>0:
         return redirect('/')
     if 'remember' not in request.session:
         request.session['remember']=''
@@ -49,7 +49,7 @@ def processLogin(request):
 def register(request):
     if 'flash' not in request.session:
         request.session['flash']=ErrorManager().addToSession()
-    if 'userID' in request.session:
+    if 'userID' in request.session and len(User.objects.filter(id=request.session['userID']))>0:
         return redirect('/')
     if 'remember' not in request.session:
         request.session['remember']=''
