@@ -26,8 +26,8 @@ SECRET_KEY = 'n2*we+bk(j-0df7)i=6(y(8+yjku4s!-9xip(1box#jhy@oes5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+#ALLOWED_HOSTS = ['52.89.44.12', 'clothing.codingdojo.com']
+ALLOWED_HOSTS = ['clothing.codingdojo.com']
 
 # Application definition
 
@@ -78,13 +78,15 @@ WSGI_APPLICATION = 'ClothingDojo.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'ClothingDojoDBNew',
-    'USER': 'root',
-    'PASSWORD': 'root',
-    'HOST': 'localhost',
-    'PORT': '3306',
+    'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': '/var/www/clothing.codingdojo.com/production/db.sqlite3',
+	'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'clothingv3',
+	'USER': 'python_admin',
+        'PASSWORD': 'a4YQZw4H',
+        'HOST': '52.89.44.12',
+        'PORT': '3306',
     }
 }
 
@@ -125,4 +127,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+#STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = "/var/www/clothing.codingdojo.com/production/static/"

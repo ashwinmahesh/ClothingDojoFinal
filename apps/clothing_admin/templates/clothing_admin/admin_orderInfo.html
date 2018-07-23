@@ -59,7 +59,7 @@
             <p><span class='bold'>Customer Name: </span>{{order.user.first_name}} {{order.user.last_name}}</p>
             <p><span class='bold'>Email: </span>{{order.user.email}}</p>
             <p><span class='bold'>Location: </span>{{order.location.name}}</p>
-            <p><span class='bold'>Cohort: </span>{{order.user.cohort.name}}</p>
+            <p><span class='bold'>Ordered: </span>{{order.ordered}}</p>
             <p><span class='bold'>Order Status:</span></p>
             <form method='post'>
                 {% csrf_token %}

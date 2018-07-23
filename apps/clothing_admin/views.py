@@ -87,7 +87,8 @@ def orders(request):
         pages.append(i)
     context={
         'orders':orders,
-        'pages':pages
+        'pages':pages,
+	'user':User.objects.get(id=request.session['userID'])
     }
     context['orders']=context['orders'][0:ORDERS_ON_PAGE]
     return render(request, 'clothing_admin/admin_orders.html', context)
@@ -107,7 +108,8 @@ def products(request):
     e=getFromSession(request.session['flash'])
     context={
         'product_success':e.getMessages('product_success'),
-        'products':Product.objects.all()
+        'products':Product.objects.all(),
+	'user':User.objects.get(id=request.session['userID'])
     }
     request.session['flash']=e.addToSession()
     return render(request, 'clothing_admin/admin_products.html', context)
@@ -141,7 +143,8 @@ def addProduct(request):
         'price':request.session['price'],
         'color_errors':e.getMessages('color'),
         'description':request.session['description'],
-        'description_errors':e.getMessages('description')
+        'description_errors':e.getMessages('description'),
+    	'user':User.objects.get(id=request.session['userID'])
     }
     request.session['flash']=e.addToSession()
     return render(request, 'clothing_admin/admin_addNew.html', context)
@@ -255,7 +258,8 @@ def editProduct(request, product_id):
         'description_errors':e.getMessages('description'),
         'product':p,
         'colors':p.colors.all(),
-        'num_colors':len(p.colors.all())
+        'num_colors':len(p.colors.all()),
+	'user':User.objects.get(id=request.session['userID'])
     }
     request.session['flash']=e.addToSession()
     return render(request, 'clothing_admin/admin_editProduct.html', context)
@@ -377,7 +381,8 @@ def batchInfo(request):
     e=getFromSession(request.session['flash'])
     context={
         'locations':Location.objects.all(),
-        'batch_success':e.getMessages('batch_success')
+        'batch_success':e.getMessages('batch_success'),
+	'user':User.objects.get(id=request.session['userID'])
     }
     request.session['flash']=e.addToSession()
     return render(request, 'clothing_admin/admin_batchInfo.html', context)
@@ -401,7 +406,8 @@ def viewLocation(request, location_id):
         Batch.objects.create(location=Location.objects.get(id=location_id))
     context={
         'location':Location.objects.get(id=location_id),
-        'batches':Location.objects.get(id=location_id).batches.all().order_by('-created_at')
+        'batches':Location.objects.get(id=location_id).batches.all().order_by('-created_at'),
+	'user':User.objects.get(id=request.session['userID'])
     }
     return render(request, 'clothing_admin/admin_viewLocation.html', context)
 
@@ -427,7 +433,8 @@ def viewBatch(request, batch_id):
     context={
         'batch':Batch.objects.get(id=batch_id),
         'items':Batch.objects.get(id=batch_id).items.all().order_by('product','color'),
-        'batch_total':batch_total
+        'batch_total':batch_total,
+	'user':User.objects.get(id=request.session['userID'])
     }
     return render(request,'clothing_admin/admin_viewBatch.html', context)
 
@@ -447,7 +454,8 @@ def batchConfirm(request, batch_id):
         print('Attempting to access location that does not exist')
         return redirect('/admin/batchInfo/')
     context={
-        'batch':Batch.objects.get(id=batch_id)
+        'batch':Batch.objects.get(id=batch_id),
+	'user':User.objects.get(id=request.session['userID'])
     }
     return render(request,'clothing_admin/admin_batchConfirm.html', context)
 

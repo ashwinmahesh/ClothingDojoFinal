@@ -19,14 +19,14 @@ def login(request):
 def processLogin(request):
     #Modify with info from codingdojo API
     request.session['loggedIn']=True
-    request.session['userID']=2
+    request.session['userID']=1
     return redirect('/')
 
 def logout(request):
-    if('loggedIn' in request.session and request.session['loggedIn']==False):
-        return redirect('/login_page/')
-    if ('loggedIn' not in request.session):
-        return redirect('/login_page/')
+    # if('loggedIn' in request.session and request.session['loggedIn']==False):
+    #     return redirect('/login_page/')
+    # if ('loggedIn' not in request.session):
+    #     return redirect('/login_page/')
 
     request.session['adminLoggedIn']=False
     # remember=request.session['remember']
@@ -41,13 +41,13 @@ def logout(request):
 def index(request):
     # ADD to every view
     if 'loggedIn' not in request.session:
-        return redirect('/login_page/')
+        return redirect('/login/')
     if request.session['loggedIn']==False:
-        return redirect('/login_page/')
+        return redirect('/login/')
     if 'userID' not in request.session:
-        return redirect('/login_page/')
+        return redirect('/login/')
     if len(User.objects.filter(id=request.session['userID']))==0:
-        return redirect('/login_page/')
+        return redirect('/login/')
 
     if 'flash' not in request.session:
         request.session['flash']=ErrorManager().addToSession()
@@ -86,6 +86,9 @@ def addToCart(request, product_id):
         return redirect('/login_page/')
     if 'userID' not in request.session:
         return redirect('/login_page/')
+
+    if request.method!='POST':
+        return redirect('/')
 
     if len(Product.objects.filter(id=product_id))==0:
         print('Attempting to view product that does not exist')
@@ -178,7 +181,6 @@ def checkout(request):
         print('Cannot checkout on an empty cart')
         return redirect('/cart/')
     print('Checking out')
-    # return redirect('/processCheckout/')
     return redirect('/payment/')
 
 def paymentInfo(request):
@@ -232,8 +234,11 @@ def processCheckout(request):
         return redirect('/cart/')
 
     cart=User.objects.get(id=request.session['userID']).cart
-    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).cohort.location)
+    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).location)
+    location=User.objects.get(id=request.session['userID']).location
+    o.batch=location.batches.last()
     o.save()
+   
     for item in cart.items.all():
         ot=OrderItem.objects.create(product=item.product, order=o, size=item.size, color=item.color, quantity=item.quantity, total=item.total)
         o.total+=ot.total
@@ -242,8 +247,8 @@ def processCheckout(request):
         p.num_sold+=ot.quantity
         p.save()
 
-    location=User.objects.get(id=request.session['userID']).cohort.location
-    o.batch=location.batches.last()
+    # location=User.objects.get(id=request.session['userID']).location
+    # o.batch=location.batches.last()
     o.save()
     
     for item in o.items.all():
@@ -296,15 +301,19 @@ def processClaim(request):
         return redirect('/')
     if request.method!='POST':
         return redirect('/')
-    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).cohort.location)
+    o=Order(user=User.objects.get(id=request.session['userID']), total=0, location=User.objects.get(id=request.session['userID']).location)
+    #
+    location=User.objects.get(id=request.session['userID']).location
+    o.batch=location.batches.last()
+    #
     o.save()
     shirt=Product.objects.get(id=FREE_SHIRT_ID)
     OrderItem.objects.create(product=shirt, order=o, size=request.POST['size'], color=Color.objects.get(id=request.POST['color']), quantity=1, total=0)
     o.num_items=1
     shirt.num_sold+=1
     shirt.save()
-    location=User.objects.get(id=request.session['userID']).cohort.location
-    o.batch=location.batches.last()
+    # location=User.objects.get(id=request.session['userID']).location
+    # o.batch=location.batches.last()
     o.save()
     user=User.objects.get(id=request.session['userID'])
     user.claimed_shirt=True
@@ -436,11 +445,10 @@ def processCancel(request, order_id):
     if order.ordered==True:
         print("This order has already been ordered. It is too late to cancel")
         return redirect('/viewOrders/')
-    ### Add another check to see if item has already been ordered ###
     #End of Specific Validations
 
     print("Cancelling the order: ", order_id)
-    location=User.objects.get(id=request.session['userID']).cohort.location
+    location=User.objects.get(id=request.session['userID']).location
     batch = location.batches.last()
     for i in range(len(order.items.all())-1, -1, -1):
         item=order.items.all()[i]
@@ -460,3 +468,4 @@ def processCancel(request, order_id):
     e.addMessage("Your order has been successfully cancelled.", 'order_cancel_success')
     request.session['flash']=e.addToSession()
     return redirect('/viewOrders/')
+
