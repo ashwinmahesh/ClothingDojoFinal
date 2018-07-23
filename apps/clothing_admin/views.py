@@ -341,6 +341,7 @@ def orderInfo(request, order_id):
     print('Looking at order')
     context={
         'order':Order.objects.get(id=order_id),
+	'user':User.objects.get(id=request.session['userID']),
     }
     return render(request, 'clothing_admin/admin_orderInfo.html', context)
 

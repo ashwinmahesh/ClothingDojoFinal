@@ -20,9 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^', include('apps.clothing_dojo.urls')),
-  #  url(r'^admin/', include('apps.clothing_admin.urls')),
+    url(r'^admin/', include('apps.clothing_admin.urls')),
     url(r'^login/', include('apps.clothing_login.urls')),
-    url(r'^admin/', include('apps.clothing_admin.urls'))
 ]+static(settings.STATIC_URL, document_root = settings.STATIC_ROOT )
 
 
