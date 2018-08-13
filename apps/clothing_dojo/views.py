@@ -463,6 +463,10 @@ def processCancel(request, order_id):
         p.save()
         item.delete()
     #Refund Card
+    if(order.stripe_id!=None):
+        re=stripe.Refund.create(charge=order.stripe_id)
+        print(re)
+        
     order.delete()
     e=getFromSession(request.session['flash'])
     e.addMessage("Your order has been successfully cancelled.", 'order_cancel_success')
